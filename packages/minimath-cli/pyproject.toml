@@ -1,0 +1,23 @@
+[project]
+name = "minimath-cli"
+version = "0.0.0"
+description = ""
+readme = "README.md"
+authors = [
+    { name = "oyghen", email = "oyghen@duck.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "minimath==0.0.0",
+    "typer>=0.24.1",
+]
+
+[tool.uv.sources]
+minimath = { workspace = true }
+
+[project.scripts]
+minimath = "minimath_cli.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.11.7,<0.12.0"]
+build-backend = "uv_build"

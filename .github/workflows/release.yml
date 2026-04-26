@@ -1,0 +1,63 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Publish library and CLI app to PyPI
+    runs-on: ubuntu-latest
+
+    environment:
+      name: pypi
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Install Python
+        run: uv python install
+
+      - name: Sync workspace
+        run: uv sync --locked --all-packages --all-extras
+
+      - name: Build all packages
+        run: uv build --no-sources --all-packages
+
+      - name: Smoke test (wheel)
+        run: |
+          set -euo pipefail
+
+          uv run --isolated --no-project \
+            --with dist/minimath-*.whl \
+            packages/minimath/tests/smoke_test_lib.py
+
+          uv run --isolated --no-project \
+            --with dist/minimath-*.whl \
+            --with dist/minimath_cli-*.whl \
+            packages/minimath-cli/tests/smoke_test_cli.py
+
+      - name: Smoke test (source distribution)
+        run: |
+          set -euo pipefail
+
+          uv run --isolated --no-project \
+            --with dist/minimath-*.tar.gz \
+            packages/minimath/tests/smoke_test_lib.py
+
+          uv run --isolated --no-project \
+            --with dist/minimath-*.tar.gz \
+            --with dist/minimath_cli-*.tar.gz \
+            packages/minimath-cli/tests/smoke_test_cli.py
+
+      - name: Publish all packages
+        run: uv publish
