@@ -2,7 +2,7 @@ from contextlib import nullcontext
 from typing import TypeAlias
 
 import pytest
-from minimath.core import collatz, is_even, is_odd
+from minimath import core
 
 ContextManager: TypeAlias = (
     nullcontext[None]
@@ -33,7 +33,7 @@ ContextManager: TypeAlias = (
 )
 def test_collatz(n: int, expected: tuple[int], ctx: ContextManager):
     with ctx:
-        gen = collatz(n)
+        gen = core.collatz(n)
         assert tuple(gen) == expected
 
 
@@ -57,7 +57,7 @@ def test_collatz(n: int, expected: tuple[int], ctx: ContextManager):
     ],
 )
 def test_is_even(number: int | float, expected: bool):
-    assert is_even(number) == expected
+    assert core.is_even(number) == expected
 
 
 @pytest.mark.parametrize(
@@ -80,4 +80,4 @@ def test_is_even(number: int | float, expected: bool):
     ],
 )
 def test_is_odd(number: int | float, expected: bool):
-    assert is_odd(number) == expected
+    assert core.is_odd(number) == expected
