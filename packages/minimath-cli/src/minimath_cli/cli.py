@@ -1,5 +1,6 @@
 import minimath
 import typer
+from minimath import core
 from rich.console import Console
 
 console = Console()
@@ -21,3 +22,11 @@ def main(
     if ctx.invoked_subcommand is None:
         typer.echo(f"{pkg_name} {pkg_version} ready. See --help for usage.")
         raise typer.Exit()
+
+
+@app.command()
+def collatz(n: int) -> None:
+    """Show the Collatz sequence."""
+    seq = tuple(core.collatz(n))
+    console.print(f"length {len(seq)}")
+    console.print(seq)
