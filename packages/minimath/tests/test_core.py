@@ -1,5 +1,40 @@
+from contextlib import nullcontext
+from typing import TypeAlias
+
 import pytest
-from minimath.core import is_even, is_odd
+from minimath.core import collatz, is_even, is_odd
+
+ContextManager: TypeAlias = (
+    nullcontext[None]
+    | pytest.RaisesExc[ValueError]
+    | pytest.RaisesExc[TypeError]
+    | pytest.RaisesExc[ZeroDivisionError]
+)
+
+
+@pytest.mark.parametrize(
+    "n, expected, ctx",
+    [
+        (1, (1,), nullcontext()),
+        (2, (2, 1), nullcontext()),
+        (4, (4, 2, 1), nullcontext()),
+        (
+            7,
+            (7, 22, 11, 34, 17, 52, 26, 13, 40, 20, 10, 5, 16, 8, 4, 2, 1),
+            nullcontext(),
+        ),
+        (11, (11, 34, 17, 52, 26, 13, 40, 20, 10, 5, 16, 8, 4, 2, 1), nullcontext()),
+        (12, (12, 6, 3, 10, 5, 16, 8, 4, 2, 1), nullcontext()),
+        (-2, None, pytest.raises(ValueError)),
+        (-1, None, pytest.raises(ValueError)),
+        (0, None, pytest.raises(ValueError)),
+        (0.5, None, pytest.raises(TypeError)),
+    ],
+)
+def test_collatz(n: int, expected: tuple[int], ctx: ContextManager):
+    with ctx:
+        gen = collatz(n)
+        assert tuple(gen) == expected
 
 
 @pytest.mark.parametrize(
