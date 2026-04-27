@@ -143,3 +143,77 @@ def test_sign(number: int | float, expected: float):
         assert math.isnan(result)
     else:
         assert result == expected
+
+
+@pytest.mark.parametrize(
+    "number, num_digits, expected, ctx",
+    [
+        # valid cases
+        (987654321.123456789, 1, 1000000000.0, nullcontext()),
+        (987654321.123456789, 2, 990000000.0, nullcontext()),
+        (987654321.123456789, 3, 988000000.0, nullcontext()),
+        (987654321.123456789, 4, 987700000.0, nullcontext()),
+        (987654321.123456789, 5, 987650000.0, nullcontext()),
+        (987654321.123456789, 6, 987654000.0, nullcontext()),
+        (987654321.123456789, 7, 987654300.0, nullcontext()),
+        (987654321.123456789, 8, 987654320.0, nullcontext()),
+        (987654321.123456789, 9, 987654321.0, nullcontext()),
+        (987654321.123456789, 10, 987654321.1, nullcontext()),
+        (987654321.123456789, 11, 987654321.12, nullcontext()),
+        (987654321.123456789, 12, 987654321.123, nullcontext()),
+        (987654321.123456789, 13, 987654321.1235, nullcontext()),
+        (1.123456789, 1, 1.0, nullcontext()),
+        (1.123456789, 2, 1.1, nullcontext()),
+        (1.123456789, 3, 1.12, nullcontext()),
+        (1.123456789, 4, 1.123, nullcontext()),
+        (0.123456789, 1, 0.1, nullcontext()),
+        (0.123456789, 2, 0.12, nullcontext()),
+        (0.123456789, 3, 0.123, nullcontext()),
+        (0.123456789, 4, 0.1235, nullcontext()),
+        (-1.4142135623730951, 1, -1.0, nullcontext()),
+        (-1.4142135623730951, 2, -1.4, nullcontext()),
+        (-1.4142135623730951, 3, -1.41, nullcontext()),
+        (-1.4142135623730951, 4, -1.414, nullcontext()),
+        (14393237.76, 1, 10000000.0, nullcontext()),
+        (14393237.76, 2, 14000000.0, nullcontext()),
+        (14393237.76, 3, 14400000.0, nullcontext()),
+        (14393237.76, 4, 14390000.0, nullcontext()),
+        (1234, 1, 1000, nullcontext()),
+        (1234, 2, 1200, nullcontext()),
+        (1234, 3, 1230, nullcontext()),
+        (1234, 4, 1234, nullcontext()),
+        (1234, 5, 1234, nullcontext()),
+        (1234, 9, 1234, nullcontext()),
+        (5678, 1, 6000, nullcontext()),
+        (5678, 2, 5700, nullcontext()),
+        (5678, 3, 5680, nullcontext()),
+        (5678, 4, 5678, nullcontext()),
+        (5123, 1, 5000, nullcontext()),
+        (5123, 2, 5100, nullcontext()),
+        (5123, 3, 5120, nullcontext()),
+        (5123, 4, 5123, nullcontext()),
+        (1, 3, 1, nullcontext()),
+        (10, 3, 10, nullcontext()),
+        (100, 3, 100, nullcontext()),
+        (1000, 3, 1000, nullcontext()),
+        # edge cases
+        (math.inf, 3, math.inf, nullcontext()),
+        (0, 3, 0, nullcontext()),
+        (0.0, 3, 0.0, nullcontext()),
+        (1e-12, 3, 1e-12, nullcontext()),
+        # invalid cases
+        (1, -1, None, pytest.raises(ValueError)),
+        (2, 0, None, pytest.raises(ValueError)),
+        (3, 0.0, None, pytest.raises(TypeError)),
+        (4, 1.0, None, pytest.raises(TypeError)),
+    ],
+)
+def test_signif(
+    number: int | float,
+    num_digits: int,
+    expected: int | float,
+    ctx: ContextManager,
+):
+    with ctx:
+        result = minimath.core.signif(number, num_digits)
+        assert result == expected

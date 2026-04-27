@@ -1,4 +1,4 @@
-__all__ = ("is_divisible", "is_even", "is_odd", "pad", "sign")
+__all__ = ("is_divisible", "is_even", "is_odd", "pad", "sign", "signif")
 
 import math
 
@@ -42,3 +42,21 @@ def sign(number: int | float, /) -> float:
         return 0.0
 
     return math.copysign(1, number)
+
+
+def signif(number: int | float, num_digits: int) -> int | float:
+    """Return the input number rounded to the specified number of significant digits."""
+    if not math.isfinite(number) or number == 0:
+        return number
+
+    if not isinstance(num_digits, int):
+        raise TypeError(
+            f"unsupported type for num_digits {type(num_digits).__name__!r}"
+        )
+
+    if num_digits < 1:
+        raise ValueError(f"invalid {num_digits=!r}; expected >= 1")
+
+    magnitude = math.floor(math.log10(abs(number)))
+    n_digits = num_digits - magnitude - 1
+    return round(number, n_digits)
