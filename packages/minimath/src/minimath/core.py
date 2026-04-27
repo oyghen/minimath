@@ -7,7 +7,7 @@ from collections.abc import Iterator
 def collatz(n: int, /) -> Iterator[int]:
     """Return the Collatz sequence."""
     if not isinstance(n, int):
-        raise TypeError(f"unsupported type {type(n).__name__!r}; expected int")
+        raise TypeError(f"expected int, got {type(n).__name__}")
     if n < 1:
         raise ValueError(f"invalid value {n!r}; expected >= 1")
 
