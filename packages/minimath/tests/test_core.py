@@ -1,3 +1,4 @@
+import math
 from contextlib import nullcontext
 from typing import TypeAlias
 
@@ -119,3 +120,26 @@ class TestPad:
 
     def test_default_fraction(self):
         assert minimath.core.pad(0.0, 1.0) == pytest.approx((-0.05, 1.05))
+
+
+@pytest.mark.parametrize(
+    "number, expected",
+    [
+        (-2.0, -1.0),
+        (-1, -1.0),
+        (-0, 0.0),
+        (0, 0.0),
+        (1, 1.0),
+        (2.0, 1.0),
+        (float("inf"), 1.0),
+        (float("-inf"), -1.0),
+        (math.nan, math.nan),
+    ],
+)
+def test_sign(number: int | float, expected: float):
+    result = minimath.core.sign(number)
+    assert isinstance(result, float)
+    if math.isnan(expected):
+        assert math.isnan(result)
+    else:
+        assert result == expected

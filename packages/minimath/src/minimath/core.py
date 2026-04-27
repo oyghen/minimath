@@ -1,5 +1,7 @@
 __all__ = ("is_divisible", "is_even", "is_odd", "pad")
 
+import math
+
 
 def is_divisible(number: int, by: int) -> bool:
     """Return True if number is evenly divisible by the specified integer."""
@@ -29,3 +31,14 @@ def pad(lower: float, upper: float, fraction: float = 0.05) -> tuple[float, floa
 
     margin = fraction * span
     return lo - margin, hi + margin
+
+
+def sign(number: int | float, /) -> float:
+    """Return the sign of a number."""
+    if math.isnan(number):
+        return number
+
+    if number == 0:
+        return 0.0
+
+    return math.copysign(1, number)
