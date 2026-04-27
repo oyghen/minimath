@@ -1,6 +1,5 @@
 import minimath
 import typer
-from minimath import core
 from rich.console import Console
 
 console = Console()
@@ -27,6 +26,6 @@ def main(
 @app.command()
 def collatz(n: int) -> None:
     """Show the Collatz sequence."""
-    seq = tuple(core.collatz(n))
+    seq = tuple(minimath.seq.collatz(n))
     console.print(f"length {len(seq)}")
     console.print(seq)

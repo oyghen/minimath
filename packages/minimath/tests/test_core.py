@@ -1,41 +1,10 @@
-import itertools
 from contextlib import nullcontext
 from typing import TypeAlias
 
+import minimath
 import pytest
-from minimath import core
 
-ContextManager: TypeAlias = (
-    nullcontext[None]
-    | pytest.RaisesExc[ValueError]
-    | pytest.RaisesExc[TypeError]
-    | pytest.RaisesExc[ZeroDivisionError]
-)
-
-
-@pytest.mark.parametrize(
-    "n, expected, ctx",
-    [
-        (1, (1,), nullcontext()),
-        (2, (2, 1), nullcontext()),
-        (4, (4, 2, 1), nullcontext()),
-        (
-            7,
-            (7, 22, 11, 34, 17, 52, 26, 13, 40, 20, 10, 5, 16, 8, 4, 2, 1),
-            nullcontext(),
-        ),
-        (11, (11, 34, 17, 52, 26, 13, 40, 20, 10, 5, 16, 8, 4, 2, 1), nullcontext()),
-        (12, (12, 6, 3, 10, 5, 16, 8, 4, 2, 1), nullcontext()),
-        (-2, None, pytest.raises(ValueError)),
-        (-1, None, pytest.raises(ValueError)),
-        (0, None, pytest.raises(ValueError)),
-        (0.5, None, pytest.raises(TypeError)),
-    ],
-)
-def test_collatz(n: int, expected: tuple[int], ctx: ContextManager):
-    with ctx:
-        gen = core.collatz(n)
-        assert tuple(gen) == expected
+ContextManager: TypeAlias = nullcontext[None] | pytest.RaisesExc[ZeroDivisionError]
 
 
 class TestDlog:
@@ -65,7 +34,7 @@ class TestDlog:
     )
     def test_log(self, number: int | float, expected: float):
         for v in (-number, number):
-            result = core.dlog(v)
+            result = minimath.core.dlog(v)
             assert isinstance(result, float)
             assert result == expected
 
@@ -95,7 +64,7 @@ class TestDlog:
     )
     def test_int(self, number: int | float, expected: int):
         for v in (-number, number):
-            result = core.dlog(v, kind="int")
+            result = minimath.core.dlog(v, kind="int")
             assert isinstance(result, int)
             assert result == expected
 
@@ -125,7 +94,7 @@ class TestDlog:
     )
     def test_linear(self, number: int | float, expected: int):
         for v in (-number, number):
-            result = core.dlog(v, kind="linear")
+            result = minimath.core.dlog(v, kind="linear")
             assert isinstance(result, float)
             assert result == expected
 
@@ -146,37 +115,14 @@ class TestDlog:
     )
     def test_decimal_numbers(self, number: int | float, expected: int | float):
         for v in (-number, number):
-            result = core.dlog(v)
+            result = minimath.core.dlog(v)
             assert isinstance(result, float)
             assert result == expected
 
     @pytest.mark.parametrize("kind", [None, "LOG", 1, 2.0, "invalid_kind"])
     def test_invalid_values(self, kind: str):
         with pytest.raises(ValueError):
-            core.dlog(10, kind=kind)
-
-
-@pytest.mark.parametrize(
-    "a, b, expected",
-    [
-        (0, 1, ()),
-        (0, 1, (0,)),
-        (0, 1, (0, 1)),
-        (0, 1, (0, 1, 1)),
-        (0, 1, (0, 1, 1, 2)),
-        (0, 1, (0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987)),
-        (1, 1, (1, 1, 2, 3)),
-        (13, 21, ()),
-        (13, 21, (13,)),
-        (13, 21, (13, 21)),
-        (13, 21, (13, 21, 34, 55, 89, 144)),
-        (6, 7, (6, 7, 13, 20, 33, 53, 86, 139)),
-    ],
-)
-def test_fibonacci(a: int, b: int, expected: tuple[int]):
-    gen = core.fibonacci(a, b)
-    result = tuple(itertools.islice(gen, len(expected)))
-    assert result == expected
+            minimath.core.dlog(10, kind=kind)
 
 
 @pytest.mark.parametrize(
@@ -201,7 +147,7 @@ def test_fibonacci(a: int, b: int, expected: tuple[int]):
 )
 def test_is_divisible(number: int, by: int, expected: bool, ctx: ContextManager):
     with ctx:
-        result = core.is_divisible(number, by)
+        result = minimath.core.is_divisible(number, by)
         assert result == expected
 
 
@@ -225,7 +171,7 @@ def test_is_divisible(number: int, by: int, expected: bool, ctx: ContextManager)
     ],
 )
 def test_is_even(number: int | float, expected: bool):
-    assert core.is_even(number) == expected
+    assert minimath.core.is_even(number) == expected
 
 
 @pytest.mark.parametrize(
@@ -248,4 +194,4 @@ def test_is_even(number: int | float, expected: bool):
     ],
 )
 def test_is_odd(number: int | float, expected: bool):
-    assert core.is_odd(number) == expected
+    assert minimath.core.is_odd(number) == expected

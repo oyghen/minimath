@@ -1,21 +1,6 @@
-__all__ = ("collatz", "dlog", "fibonacci", "is_divisible", "is_even", "is_odd")
+__all__ = ("dlog", "is_divisible", "is_even", "is_odd")
 
 import math
-from collections.abc import Iterator
-
-
-def collatz(n: int, /) -> Iterator[int]:
-    """Return the Collatz sequence."""
-    if not isinstance(n, int):
-        raise TypeError(f"expected int, got {type(n).__name__}")
-    if n < 1:
-        raise ValueError(f"invalid value {n!r}; expected >= 1")
-
-    while True:
-        yield n
-        if n == 1:
-            break
-        n = n // 2 if is_even(n) else 3 * n + 1
 
 
 def dlog(number: int | float, /, kind: str = "log") -> int | float:
@@ -39,16 +24,6 @@ def dlog(number: int | float, /, kind: str = "log") -> int | float:
             y0, y1 = n, n + 1
             x0, x1 = 10 ** (n - 1), 10**n
             return (y0 * (x1 - x) + y1 * (x - x0)) / (x1 - x0) if x >= 0.1 else 0.0
-
-
-def fibonacci(a: int = 0, b: int = 1, /) -> Iterator[int]:
-    """Return the Fibonacci sequence."""
-    yield a
-    yield b
-    while True:
-        c = a + b
-        yield c
-        a, b = b, c
 
 
 def is_divisible(number: int, by: int) -> bool:
