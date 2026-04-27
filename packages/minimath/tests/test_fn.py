@@ -1,5 +1,30 @@
+import copy
+from typing import Any
+
 import minimath
 import pytest
+
+
+@pytest.mark.parametrize(
+    "value, is_mutable",
+    [
+        (None, False),
+        (5, False),
+        ("abc", False),
+        ([1, 2, 3], True),
+        ((1, 2), False),
+        ({"a": 1}, True),
+    ],
+)
+def test_identity(value: Any, is_mutable: bool):
+    expected = copy.deepcopy(value)
+
+    result = minimath.fn.identity(value)
+
+    assert result is value
+    assert result == expected
+    if is_mutable:
+        assert result is not expected
 
 
 class TestDlog:

@@ -1,5 +1,14 @@
+__all__ = ("identity", "dlog")
+
 import math
-from typing import Literal, get_args
+from typing import Literal, TypeVar, get_args
+
+T = TypeVar("T")
+
+
+def identity(value: T, /) -> T:
+    """Return value unchanged."""
+    return value
 
 
 def dlog(
