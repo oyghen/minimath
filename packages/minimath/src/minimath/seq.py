@@ -6,7 +6,7 @@ from minimath.core import is_even
 
 
 def collatz(n: int, /) -> Iterator[int]:
-    """Return the Collatz sequence."""
+    """Return the Collatz conjecture sequence starting from the given integer."""
     if not isinstance(n, int):
         raise TypeError(f"expected int, got {type(n).__name__}")
     if n < 1:
