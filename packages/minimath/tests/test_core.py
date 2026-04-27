@@ -77,3 +77,45 @@ def test_is_even(number: int | float, expected: bool):
 )
 def test_is_odd(number: int | float, expected: bool):
     assert minimath.core.is_odd(number) == expected
+
+
+class TestPad:
+    @pytest.mark.parametrize(
+        "lower, upper, fraction, expected",
+        [
+            (0.0, 1.0, 0.05, (-0.05, 1.05)),
+            (0.0, 1.0, 0.1, (-0.1, 1.1)),
+            (1.0, 0.0, 0.05, (-0.05, 1.05)),
+            (0, 10, 0.1, (-1.0, 11.0)),
+            (0.0, 1.0, -0.2, (0.2, 0.8)),
+            (0.0, 1.0, 2.0, (-2.0, 3.0)),
+        ],
+        ids=[
+            "fraction=0.05",
+            "fraction=0.10",
+            "inverted inputs",
+            "int inputs coerced to float",
+            "negative fraction (shrinks interval)",
+            "large fraction",
+        ],
+    )
+    def test_various_cases(
+        self,
+        lower: float,
+        upper: float,
+        fraction: float,
+        expected: tuple[float, float],
+    ):
+        result = minimath.core.pad(lower, upper, fraction)
+        assert isinstance(result, tuple)
+        assert all(isinstance(x, float) for x in result)
+        assert result == pytest.approx(expected)
+
+    def test_zero_length_interval(self):
+        assert minimath.core.pad(2.0, 2.0) == (2.0, 2.0)
+
+    def test_symmetry_with_inverted_inputs(self):
+        assert minimath.core.pad(0.0, 1.0) == minimath.core.pad(1.0, 0.0)
+
+    def test_default_fraction(self):
+        assert minimath.core.pad(0.0, 1.0) == pytest.approx((-0.05, 1.05))

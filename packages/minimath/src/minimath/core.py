@@ -1,4 +1,4 @@
-__all__ = ("is_divisible", "is_even", "is_odd")
+__all__ = ("is_divisible", "is_even", "is_odd", "pad")
 
 
 def is_divisible(number: int, by: int) -> bool:
@@ -14,3 +14,18 @@ def is_even(number: int | float, /) -> bool:
 def is_odd(number: int | float, /) -> bool:
     """Return True if number is odd."""
     return number % 2 != 0
+
+
+def pad(lower: float, upper: float, fraction: float = 0.05) -> tuple[float, float]:
+    """Return the interval (lower, upper) expanded by the given fractional margin."""
+    lo = float(lower)
+    hi = float(upper)
+    if lo > hi:
+        lo, hi = hi, lo
+
+    span = hi - lo
+    if span == 0.0:
+        return lo, hi
+
+    margin = fraction * span
+    return lo - margin, hi + margin
