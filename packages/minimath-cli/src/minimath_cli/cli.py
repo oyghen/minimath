@@ -1,8 +1,6 @@
 import minimath
 import typer
-from rich.console import Console
 
-console = Console()
 app = typer.Typer(add_completion=False)
 
 
@@ -24,8 +22,14 @@ def main(
 
 
 @app.command()
-def collatz(n: int) -> None:
-    """Show the Collatz sequence."""
-    seq = tuple(minimath.seq.collatz(n))
-    console.print(f"length {len(seq)}")
-    console.print(seq)
+def collatz(start: int) -> None:
+    """Display the Collatz conjecture sequence starting from the given integer.
+
+    Example:
+    $ minimath collatz 837799
+    """
+    seq = tuple(minimath.seq.collatz(start))
+    prefix = typer.style("Sequence length", fg=typer.colors.GREEN)
+    seq_length = typer.style(len(seq), fg=typer.colors.CYAN, bold=True)
+    typer.echo(f"{prefix}: {seq_length}")
+    typer.echo(seq)
