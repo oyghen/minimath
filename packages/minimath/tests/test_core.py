@@ -62,6 +62,32 @@ def test_fibonacci(a: int, b: int, expected: tuple[int]):
 
 
 @pytest.mark.parametrize(
+    "number, by, expected, ctx",
+    [
+        (-1, 2, False, nullcontext()),
+        (0, 2, True, nullcontext()),
+        (1, 2, False, nullcontext()),
+        (2, 2, True, nullcontext()),
+        (3, 2, False, nullcontext()),
+        (4, 2, True, nullcontext()),
+        (5, 2, False, nullcontext()),
+        (6, 2, True, nullcontext()),
+        (7, 2, False, nullcontext()),
+        (8, 2, True, nullcontext()),
+        (9, 2, False, nullcontext()),
+        (10, 2, True, nullcontext()),
+        (10, 5, True, nullcontext()),
+        (11, 2, False, nullcontext()),
+        (10, 0, True, pytest.raises(ZeroDivisionError)),
+    ],
+)
+def test_is_divisible(number: int, by: int, expected: bool, ctx: ContextManager):
+    with ctx:
+        result = core.is_divisible(number, by)
+        assert result == expected
+
+
+@pytest.mark.parametrize(
     "number, expected",
     [
         (-1, False),
