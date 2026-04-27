@@ -1,3 +1,6 @@
+import itertools
+from typing import Annotated
+
 import minimath
 import typer
 
@@ -32,4 +35,20 @@ def collatz(start: int) -> None:
     prefix = typer.style("Sequence length", fg=typer.colors.GREEN)
     seq_length = typer.style(len(seq), fg=typer.colors.CYAN, bold=True)
     typer.echo(f"{prefix}: {seq_length}")
+    typer.echo(seq)
+
+
+@app.command()
+def fibonacci(
+    n: Annotated[int, typer.Argument(help="Number of terms.")],
+    a: int = typer.Option(0, help="First starting integer."),
+    b: int = typer.Option(1, help="Second starting integer."),
+) -> None:
+    """Display the first n terms of the Fibonacci sequence starting with a and b.
+
+    Example:
+    $ minimath fibonacci 10
+    """
+    gen = minimath.seq.fibonacci(a, b)
+    seq = tuple(itertools.islice(gen, n))
     typer.echo(seq)
