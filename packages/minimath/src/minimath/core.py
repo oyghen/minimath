@@ -1,4 +1,4 @@
-__all__ = ("is_divisible", "is_even", "is_odd", "pad")
+__all__ = ("is_divisible", "is_even", "is_odd", "pad", "sign")
 
 import math
 
