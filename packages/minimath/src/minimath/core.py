@@ -1,4 +1,4 @@
-__all__ = ("collatz", "is_even", "is_odd")
+__all__ = ("collatz", "fibonacci", "is_even", "is_odd")
 
 from collections.abc import Iterator
 
@@ -15,6 +15,16 @@ def collatz(n: int, /) -> Iterator[int]:
         if n == 1:
             break
         n = n // 2 if is_even(n) else 3 * n + 1
+
+
+def fibonacci(a: int = 0, b: int = 1, /) -> Iterator[int]:
+    """Return the Fibonacci sequence."""
+    yield a
+    yield b
+    while True:
+        c = a + b
+        yield c
+        a, b = b, c
 
 
 def is_even(number: int | float, /) -> bool:

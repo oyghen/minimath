@@ -1,3 +1,4 @@
+import itertools
 from contextlib import nullcontext
 from typing import TypeAlias
 
@@ -35,6 +36,29 @@ def test_collatz(n: int, expected: tuple[int], ctx: ContextManager):
     with ctx:
         gen = core.collatz(n)
         assert tuple(gen) == expected
+
+
+@pytest.mark.parametrize(
+    "a, b, expected",
+    [
+        (0, 1, ()),
+        (0, 1, (0,)),
+        (0, 1, (0, 1)),
+        (0, 1, (0, 1, 1)),
+        (0, 1, (0, 1, 1, 2)),
+        (0, 1, (0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987)),
+        (1, 1, (1, 1, 2, 3)),
+        (13, 21, ()),
+        (13, 21, (13,)),
+        (13, 21, (13, 21)),
+        (13, 21, (13, 21, 34, 55, 89, 144)),
+        (6, 7, (6, 7, 13, 20, 33, 53, 86, 139)),
+    ],
+)
+def test_fibonacci(a: int, b: int, expected: tuple[int]):
+    gen = core.fibonacci(a, b)
+    result = tuple(itertools.islice(gen, len(expected)))
+    assert result == expected
 
 
 @pytest.mark.parametrize(
