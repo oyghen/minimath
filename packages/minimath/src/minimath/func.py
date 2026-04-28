@@ -26,19 +26,6 @@ _PHONE_KEYPAD_TRANSLATION: Final[dict[int, str]] = str.maketrans(
 )
 
 
-def phone_keypad_digits(text: str) -> str:
-    """Return text with letters replaced by phone keypad digits."""
-    if not isinstance(text, str):
-        raise TypeError(f"text must be str, got {type(text).__name__}")
-
-    return text.translate(_PHONE_KEYPAD_TRANSLATION)
-
-
-def identity(value: T, /) -> T:
-    """Return value unchanged."""
-    return value
-
-
 def dlog(
     number: int | float,
     /,
@@ -65,3 +52,16 @@ def dlog(
             y0, y1 = n, n + 1
             x0, x1 = 10 ** (n - 1), 10**n
             return (y0 * (x1 - x) + y1 * (x - x0)) / (x1 - x0) if x >= 0.1 else 0.0
+
+
+def identity(value: T, /) -> T:
+    """Return value unchanged."""
+    return value
+
+
+def phone_keypad_digits(text: str) -> str:
+    """Return text with letters replaced by phone keypad digits."""
+    if not isinstance(text, str):
+        raise TypeError(f"text must be str, got {type(text).__name__}")
+
+    return text.translate(_PHONE_KEYPAD_TRANSLATION)
