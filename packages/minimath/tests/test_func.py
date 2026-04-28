@@ -5,6 +5,60 @@ import minimath
 import pytest
 
 
+class TestPhoneKeypadDigits:
+    @pytest.mark.parametrize(
+        ("input_text", "expected"),
+        [
+            ("ABC", "222"),
+            ("def", "333"),
+            ("Hello", "43556"),
+            ("WORLD", "96753"),
+            ("Call Me", "2255 63"),
+            ("1-800-FLOWERS", "1-800-3569377"),
+            ("minimath", "64646284"),
+        ],
+    )
+    def test_basic_letter_conversion(self, input_text: str, expected: str) -> None:
+        assert minimath.func.phone_keypad_digits(input_text) == expected
+
+    @pytest.mark.parametrize(
+        "input_text",
+        [
+            "",
+            "12345",
+            "1-2-3",
+            "   ",
+            "!@#$%",
+        ],
+    )
+    def test_non_letters_are_preserved(self, input_text: str) -> None:
+        assert minimath.func.phone_keypad_digits(input_text) == input_text
+
+    @pytest.mark.parametrize(
+        ("input_text", "expected"),
+        [
+            ("aBcDeF", "222333"),
+            ("PyThOn", "798466"),
+        ],
+    )
+    def test_case_insensitivity(self, input_text: str, expected: str) -> None:
+        assert minimath.func.phone_keypad_digits(input_text) == expected
+
+    @pytest.mark.parametrize(
+        "invalid_input",
+        [
+            None,
+            123,
+            12.34,
+            ["ABC"],
+            {"text": "ABC"},
+        ],
+    )
+    def test_invalid_input_type_raises(self, invalid_input) -> None:
+        with pytest.raises(TypeError):
+            minimath.func.phone_keypad_digits(invalid_input)
+
+
 @pytest.mark.parametrize(
     "value, is_mutable",
     [
