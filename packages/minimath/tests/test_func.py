@@ -19,7 +19,7 @@ import pytest
 def test_identity(value: Any, is_mutable: bool):
     expected = copy.deepcopy(value)
 
-    result = minimath.fn.identity(value)
+    result = minimath.func.identity(value)
 
     assert result is value
     assert result == expected
@@ -54,7 +54,7 @@ class TestDlog:
     )
     def test_log(self, number: int | float, expected: float):
         for v in (-number, number):
-            result = minimath.fn.dlog(v)
+            result = minimath.func.dlog(v)
             assert isinstance(result, float)
             assert result == expected
 
@@ -84,7 +84,7 @@ class TestDlog:
     )
     def test_int(self, number: int | float, expected: int):
         for v in (-number, number):
-            result = minimath.fn.dlog(v, kind="int")
+            result = minimath.func.dlog(v, kind="int")
             assert isinstance(result, int)
             assert result == expected
 
@@ -114,7 +114,7 @@ class TestDlog:
     )
     def test_linear(self, number: int | float, expected: int):
         for v in (-number, number):
-            result = minimath.fn.dlog(v, kind="linear")
+            result = minimath.func.dlog(v, kind="linear")
             assert isinstance(result, float)
             assert result == expected
 
@@ -135,11 +135,11 @@ class TestDlog:
     )
     def test_decimal_numbers(self, number: int | float, expected: int | float):
         for v in (-number, number):
-            result = minimath.fn.dlog(v)
+            result = minimath.func.dlog(v)
             assert isinstance(result, float)
             assert result == expected
 
     @pytest.mark.parametrize("kind", [None, "LOG", 1, 2.0, "invalid_kind"])
     def test_invalid_values(self, kind: str):
         with pytest.raises(ValueError):
-            minimath.fn.dlog(10, kind=kind)  # type: ignore
+            minimath.func.dlog(10, kind=kind)  # type: ignore

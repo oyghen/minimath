@@ -1,4 +1,4 @@
-__all__ = ("__version__", "core", "fn", "seq", "sets")
+__all__ = ("__version__", "core", "func", "seq", "sets")
 
 from importlib import metadata
 from typing import TYPE_CHECKING
@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 __version__ = metadata.version(__name__)
 
 if TYPE_CHECKING:
-    from minimath import core, fn, seq, sets
+    from minimath import core, func, seq, sets
 
 
 def __getattr__(name: str):
