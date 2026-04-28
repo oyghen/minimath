@@ -1,4 +1,4 @@
-__all__ = ("identity", "dlog")
+__all__ = ("dlog", "identity", "phone_keypad_digits")
 
 import math
 from typing import Final, Literal, TypeVar, get_args
