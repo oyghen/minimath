@@ -16,6 +16,7 @@ class TestPhoneKeypadDigits:
             ("Call Me", "2255 63"),
             ("1-800-FLOWERS", "1-800-3569377"),
             ("minimath", "64646284"),
+            ("Hello, World!", "43556, 96753!"),
         ],
     )
     def test_basic_letter_conversion(self, input_text: str, expected: str) -> None:
