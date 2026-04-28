@@ -52,3 +52,9 @@ def fibonacci(
     gen = minimath.seqs.fibonacci(a, b)
     seq = tuple(itertools.islice(gen, n))
     typer.echo(seq)
+
+
+@app.command()
+def keypad(text: str) -> None:
+    """Display text with letters replaced by phone keypad digits."""
+    typer.echo(minimath.func.phone_keypad_digits(text))
