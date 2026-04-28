@@ -1,6 +1,6 @@
 [project]
 name = "minimath-cli"
-version = "0.1.0rc2"
+version = "0.1.0rc3"
 description = ""
 readme = "README.md"
 authors = [
@@ -8,7 +8,7 @@ authors = [
 ]
 requires-python = ">=3.11"
 dependencies = [
-    "minimath==0.1.0rc2",
+    "minimath==0.1.0rc3",
     "typer>=0.24.1",
 ]
 
