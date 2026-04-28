@@ -31,7 +31,7 @@ def collatz(start: int) -> None:
     Example:
     $ minimath collatz 837799
     """
-    seq = tuple(minimath.seq.collatz(start))
+    seq = tuple(minimath.seqs.collatz(start))
     prefix = typer.style("Sequence length", fg=typer.colors.GREEN)
     seq_length = typer.style(len(seq), fg=typer.colors.CYAN, bold=True)
     typer.echo(f"{prefix}: {seq_length}")
@@ -49,6 +49,6 @@ def fibonacci(
     Example:
     $ minimath fibonacci 10
     """
-    gen = minimath.seq.fibonacci(a, b)
+    gen = minimath.seqs.fibonacci(a, b)
     seq = tuple(itertools.islice(gen, n))
     typer.echo(seq)

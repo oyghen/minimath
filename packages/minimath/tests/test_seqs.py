@@ -31,7 +31,7 @@ ContextManager: TypeAlias = (
 )
 def test_collatz(n: int, expected: tuple[int], ctx: ContextManager):
     with ctx:
-        gen = minimath.seq.collatz(n)
+        gen = minimath.seqs.collatz(n)
         assert tuple(gen) == expected
 
 
@@ -53,6 +53,6 @@ def test_collatz(n: int, expected: tuple[int], ctx: ContextManager):
     ],
 )
 def test_fibonacci(a: int, b: int, expected: tuple[int]):
-    gen = minimath.seq.fibonacci(a, b)
+    gen = minimath.seqs.fibonacci(a, b)
     result = tuple(itertools.islice(gen, len(expected)))
     assert result == expected
