@@ -107,12 +107,12 @@ wheels = [
 
 [[package]]
 name = "minimath"
-version = "0.1.0rc3"
+version = "0.1.0"
 source = { editable = "packages/minimath" }
 
 [[package]]
 name = "minimath-cli"
-version = "0.1.0rc3"
+version = "0.1.0"
 source = { editable = "packages/minimath-cli" }
 dependencies = [
     { name = "minimath" },
@@ -127,7 +127,7 @@ requires-dist = [
 
 [[package]]
 name = "minimath-workspace"
-version = "0.1.0rc3"
+version = "0.1.0"
 source = { virtual = "." }
 
 [package.dev-dependencies]
