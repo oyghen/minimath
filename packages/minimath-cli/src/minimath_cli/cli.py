@@ -55,6 +55,10 @@ def fibonacci(
 
 
 @app.command()
-def keypad(text: str) -> None:
-    """Display text with letters replaced by phone keypad digits."""
-    typer.echo(minimath.func.phone_keypad_digits(text))
+def keypad(text: list[str]) -> None:
+    """Display text with letters replaced by phone keypad digits.
+
+    Example:
+    $ minimath keypad hello world
+    """
+    typer.echo(" ".join(minimath.func.phone_keypad_digits(word) for word in text))
